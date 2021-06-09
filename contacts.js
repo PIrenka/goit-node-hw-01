@@ -5,6 +5,10 @@ const contactsPath = path.join("./db/contacts.json");
 
 const date = Date.now();
 
+const shortid = require("shortid");
+
+// console.log(shortid.generate());
+
 async function listContacts() {
   try {
     const data = await fs.readFile(contactsPath, "utf8");
@@ -20,7 +24,7 @@ async function getContactById(contactId) {
     const data = await fs.readFile(contactsPath, "utf8");
     const contacts = JSON.parse(data);
 
-    const contactById = contacts.find(({ id }) => id === contactId);
+    const contactById = contacts.find(({ id }) => id.toString() === contactId);
     console.log("contactById:   ", contactById);
     return contactById;
   } catch (err) {
@@ -33,14 +37,17 @@ async function removeContact(contactId) {
     const data = await fs.readFile(contactsPath, "utf8");
     const contacts = JSON.parse(data);
 
-    const removeContactById = contacts.filter(({ id }) => id !== contactId);
-    const contactsListAfterRemove = JSON.stringify(removeContactById);
+    const removeContactList = contacts.filter(
+      ({ id }) => id.toString() !== contactId
+    );
+    const contactsListAfterRemove = JSON.stringify(removeContactList);
 
     const newFileContacts = await fs.writeFile(
       contactsPath,
       contactsListAfterRemove,
       "utf8"
     );
+    return console.table(removeContactList);
   } catch (err) {
     console.error(err);
   }
@@ -52,15 +59,14 @@ async function addContact(name, email, phone) {
     const contacts = JSON.parse(data);
 
     const emailC = contacts.map((el) => el.email);
-    // console.log("emailC:  ", emailC);
 
     if (!emailC.includes(email)) {
-      const dataAddToContacts = { id: date, name, email, phone };
+      const dataAddToContacts = { id: shortid.generate(), name, email, phone };
       contacts.push(dataAddToContacts);
-      // console.log(contacts);
       newDataContacts = JSON.stringify(contacts);
       await fs.writeFile(contactsPath, newDataContacts);
     }
+    console.table(contacts);
   } catch (err) {
     console.error(err);
   }
