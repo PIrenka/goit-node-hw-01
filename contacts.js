@@ -4,7 +4,6 @@ const fs = require("fs").promises;
 const contactsPath = path.join("./db/contacts.json");
 
 const date = Date.now();
-// console.log(date);
 
 async function listContacts() {
   try {
@@ -15,57 +14,37 @@ async function listContacts() {
     console.error(err);
   }
 }
-// listContacts();
 
 async function getContactById(contactId) {
   try {
     const data = await fs.readFile(contactsPath, "utf8");
     const contacts = JSON.parse(data);
 
-    const contactById = contacts.find(
-      ({ id }) =>
-        //    id.toString() === contactId;
-        id === contactId
-    );
+    const contactById = contacts.find(({ id }) => id === contactId);
     console.log("contactById:   ", contactById);
     return contactById;
   } catch (err) {
     console.error(err);
   }
 }
-// getContactById("10");
-// getContactById(10);
 
 async function removeContact(contactId) {
   try {
     const data = await fs.readFile(contactsPath, "utf8");
     const contacts = JSON.parse(data);
 
-    // console.log("data: ", data);
-    // console.log("contacts: ", contacts);
-
-    // console.log("contactId: ", contactId);
-
     const removeContactById = contacts.filter(({ id }) => id !== contactId);
-    // console.log("removeContactById: ", removeContactById);
     const contactsListAfterRemove = JSON.stringify(removeContactById);
-
-    // console.log("contactsListAfterRemove:  ", contactsListAfterRemove);
-
-    // await writeToJson(contactsListAfterRemove);
 
     const newFileContacts = await fs.writeFile(
       contactsPath,
       contactsListAfterRemove,
       "utf8"
     );
-    // console.log("newFileContacts:  ", newFileContacts);
   } catch (err) {
     console.error(err);
   }
 }
-// removeContact("10");
-// removeContact(10);
 
 async function addContact(name, email, phone) {
   try {
