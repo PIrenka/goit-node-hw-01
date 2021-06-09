@@ -1,13 +1,8 @@
 const path = require("path");
 const fs = require("fs").promises;
-
-const contactsPath = path.join("./db/contacts.json");
-
-const date = Date.now();
-
 const shortid = require("shortid");
 
-// console.log(shortid.generate());
+const contactsPath = path.join("./db/contacts.json");
 
 async function listContacts() {
   try {
@@ -71,12 +66,6 @@ async function addContact(name, email, phone) {
     console.error(err);
   }
 }
-
-// listContacts();
-// addContact("david", "email@gmail.com", "12345678");
-// addContact("david", "email555@gmail.com", "12345678");
-// removeContact(1623275852074);
-// listContacts();
 
 module.exports = {
   listContacts,

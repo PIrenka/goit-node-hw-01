@@ -5,12 +5,6 @@ const {
   removeContact,
 } = require("./contacts.js");
 
-// listContacts();
-// addContact("david", "email@gmail.com", "12345678");
-// addContact("david", "email555@gmail.com", "12345678");
-// removeContact(1623275852074);
-// listContacts();
-
 const { Command } = require("commander");
 const program = new Command();
 program
@@ -24,7 +18,6 @@ program.parse(process.argv);
 
 const argv = program.opts();
 
-// TODO: рефакторить
 function invokeAction({ action, id, name, email, phone }) {
   switch (action) {
     case "list":
